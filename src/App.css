@@ -21,3 +21,15 @@ button:hover {
   color:#fff;
   transition: all 0.4s;
 }
+
+img {
+  width:20%;
+}
+
+.card-grid {
+  margin-top: 40px;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid: 20px;
+
+}
