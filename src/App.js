@@ -1,18 +1,19 @@
 import { useState } from 'react';
+import Card from './components/Card';
 import './App.css';
 
 const cardImages = [
-	{ src: '/images/Bastila-Shan.jpg' },
-	{ src: '/images/Black-sith.jpg' },
-	{ src: '/images/Dark-lord-Vador.jpg' },
-	{ src: '/images/Darth-vador.jpg' },
-	{ src: '/images/Mandalorian.jpg' },
-	{ src: '/images/Yoda.jpg' },
+	{ src: '/images/Villains-1.png' },
+	{ src: '/images/Robot-2.png' },
+	{ src: '/images/Trooper-3.png' },
+	{ src: '/images/Bear-4.png' },
+	{ src: '/images/Woman-5.png' },
+	{ src: '/images/Darth-6.png' },
 ];
 
 function App() {
 	const [cards, setCards] = useState([]);
-	const [turns, setTurn] = useState(0);
+	const [turns, setTurns] = useState(0);
 
 	// * Shuffle cards
 	const shuffleCards = () => {
@@ -21,21 +22,26 @@ function App() {
 			.map((card) => ({ ...card, id: Math.random() })); // * Add ID proberty
 
 		setCards(shuffledCards);
-		setTurn(0);
+		setTurns(0);
 	};
 	console.log(cards, turns);
 	return (
 		<div className='App'>
 			<h1>Star Wars | Memory Game</h1>
+			<small className='source'>
+				Image credit:&nbsp;
+				<a
+					href='https://www.deviantart.com/dereklaufman/gallery'
+					target='_blank'
+					rel='noreferrer'
+				>
+					DerekLaufman
+				</a>
+			</small>
 			<button onClick={shuffleCards}>New Game</button>
 			<div className='card-grid'>
 				{cards.map((card) => (
-					<div className='card' key={card.id}>
-						<div>
-							<img className='front' src={card.src} alt='card front' />
-							<img className='back' src='/images/cover.jpg' alt='card cover' />
-						</div>
-					</div>
+					<Card key={card.id} card={card} />
 				))}
 			</div>
 		</div>
