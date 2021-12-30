@@ -3,12 +3,12 @@ import Card from './components/Card';
 import './App.css';
 
 const cardImages = [
-	{ src: '/images/Villains-1.png' },
-	{ src: '/images/Robot-2.png' },
-	{ src: '/images/Trooper-3.png' },
-	{ src: '/images/Bear-4.png' },
-	{ src: '/images/Woman-5.png' },
-	{ src: '/images/Darth-6.png' },
+	{ src: '/images/Villains-1.png', matched: false },
+	{ src: '/images/Robot-2.png', matched: false },
+	{ src: '/images/Trooper-3.png', matched: false },
+	{ src: '/images/Bear-4.png', matched: false },
+	{ src: '/images/Woman-5.png', matched: false },
+	{ src: '/images/Darth-6.png', matched: false },
 ];
 
 function App() {
@@ -37,7 +37,21 @@ function App() {
 	// * Compare 2 cards
 	useEffect(() => {
 		if (choiceOne && choiceTwo) {
+			// * Check match
 			if (choiceOne.src === choiceTwo.src) {
+				// ! Update the card state and use the previous state to update the state
+				setCards((prevCards) => {
+					// * Create new array with
+					return prevCards.map((card) => {
+						// * Selected card equal to the previous card
+						if (card.src === choiceOne.src) {
+							// * Send new object with matched cards
+							return { ...card, matched: true };
+						} else {
+							return card;
+						}
+					});
+				});
 				console.log('Those cards match');
 				resetTurns();
 			} else {
@@ -52,7 +66,7 @@ function App() {
 		setChoiceTwo(null);
 		setTurns((prevTurns) => prevTurns + 1);
 	};
-
+	console.log('new update:', cards);
 	return (
 		<div className='App'>
 			<h1>Star Wars | Memory Game</h1>
