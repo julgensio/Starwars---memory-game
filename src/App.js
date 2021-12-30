@@ -19,11 +19,17 @@ function App() {
 	const [choiceOne, setChoiceOne] = useState(null);
 	const [choiceTwo, setChoiceTwo] = useState(null);
 
+	//  * Disable show cards
+	const [disable, setDisable] = useState(false);
+
 	// * Shuffle cards
 	const shuffleCards = () => {
 		const shuffledCards = [...cardImages, ...cardImages]
-			.sort(() => Math.random() - 0.5) // * negative number remains the same order | positive number switch the numbers around
-			.map((card) => ({ ...card, id: Math.random() })); // * Add ID proberty
+			.sort(() => Math.random() - 0.5) // * Negative number remains the same order | positive number switch the numbers around
+			.map((card) => ({ ...card, id: Math.random() })); // * Add ID property
+		// * Reset chosen card
+		setChoiceOne(null);
+		setChoiceTwo(null);
 
 		setCards(shuffledCards);
 		setTurns(0);
@@ -37,6 +43,7 @@ function App() {
 	// * Compare 2 cards
 	useEffect(() => {
 		if (choiceOne && choiceTwo) {
+			setDisable(true);
 			// * Check match
 			if (choiceOne.src === choiceTwo.src) {
 				// ! Update the card state and use the previous state to update the state
@@ -52,10 +59,9 @@ function App() {
 						}
 					});
 				});
-				console.log('Those cards match');
+
 				resetTurns();
 			} else {
-				console.log('those cards do not match');
 				resetTurns();
 			}
 		}
@@ -65,8 +71,14 @@ function App() {
 		setChoiceOne(null);
 		setChoiceTwo(null);
 		setTurns((prevTurns) => prevTurns + 1);
+
+		setDisable(false);
 	};
-	console.log('new update:', cards);
+	// * Reset the game by start
+	useEffect(() => {
+		shuffleCards();
+	}, []);
+
 	return (
 		<div className='App'>
 			<h1>Star Wars | Memory Game</h1>
@@ -80,7 +92,9 @@ function App() {
 					DerekLaufman
 				</a>
 			</small>
+
 			<button onClick={shuffleCards}>New Game</button>
+			<p>Turns: {turns}</p>
 			<div className='card-grid'>
 				{cards.map((card) => (
 					<Card
@@ -88,6 +102,7 @@ function App() {
 						card={card}
 						handleChoice={handleChoice}
 						flipped={card === choiceOne || card === choiceTwo || card.matched}
+						disable={disable}
 					/>
 				))}
 			</div>
